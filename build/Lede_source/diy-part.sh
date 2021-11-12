@@ -27,6 +27,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 
 sed -i 's/eth0/eth0 eth2 eth3/g' package/base-files/files/etc/board.d/99-default_network           #增加lan口
 
+#设置拨号
 sed -i '2i # network config' $ZZZ
 sed -i "3i uci set network.wan.proto='pppoe'" $ZZZ
 sed -i "4i uci set network.wan.username='CD0283366379757'" $ZZZ
