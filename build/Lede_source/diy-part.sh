@@ -28,6 +28,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/M
 sed -i 's/eth0/eth0 eth2 eth3/g' package/base-files/files/etc/board.d/99-default_network           #增加lan口
 
 #godproxy去广告插件
+rm -rf package/luci-app-godproxy
 git clone https://github.com/project-lede/luci-app-godproxy.git package/luci-app-godproxy
 #git clone https://github.com/godros/luci-app-ikoolproxy.git package/luci-app-ikoolproxy
 
