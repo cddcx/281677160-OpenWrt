@@ -23,25 +23,19 @@ uci set system.@system[0].hostname='OpenWrt-du'                            # 修
 #sed -i 's/\/bin\/login/\/bin\/login -f root/' /etc/config/ttyd             # 设置ttyd免帐号登录，如若开启，进入OPENWRT后可能要重启一次才生效
 EOF
 
+# luci-theme-argon改版主题
+rm -rf package/lean/luci-theme-argon
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
+sed -i 's/luci-theme-argon-18.06/luci-theme-argon/g' package/lean/luci-theme-argon/Makefile
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile            # 选择argon为默认主题
 
-sed -i 's/eth0/eth0 eth2 eth3/g' package/base-files/files/etc/board.d/99-default_network           #增加lan口
+# 软件中心istore
+svn co https://github.com/linkease/istore/trunk/luci/luci-app-store package/luci-app-store
+rm -rf package/luci-app-store/.svn
 
 #godproxy去广告插件
-rm -rf package/luci-app-godproxy
-git clone https://github.com/project-lede/luci-app-godproxy.git package/luci-app-godproxy
+#rm -rf package/luci-app-ikoolproxy
 #git clone https://github.com/godros/luci-app-ikoolproxy.git package/luci-app-ikoolproxy
-
-#设置拨号
-sed -i '2i # network config' $ZZZ
-sed -i "3i uci set network.wan.proto='pppoe'" $ZZZ
-sed -i "4i uci set network.wan.username='CD0283366379757'" $ZZZ
-sed -i "5i uci set network.wan.password='19701115'" $ZZZ
-sed -i "6i uci set network.wan.ifname='eth1'" $ZZZ
-sed -i "7i uci set network.wan6.ifname='eth1'" $ZZZ
-sed -i '8i uci commit network' $ZZZ
-
-
 
 sed -i "s/OpenWrt /${Author} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ           # 增加个性名字 ${Author} 默认为你的github帐号
 
@@ -62,6 +56,7 @@ EOF
 
 
 # 修改插件名字
+sed -i 's/("iStore"), 31/("应用商店"), 61/g' package/luci-app-store/luasrc/controller/store.lua
 sed -i 's/"aMule设置"/"电驴下载"/g' `grep "aMule设置" -rl ./`
 sed -i 's/"网络存储"/"NAS"/g' `grep "网络存储" -rl ./`
 sed -i 's/"Turbo ACC 网络加速"/"网络加速"/g' `grep "Turbo ACC 网络加速" -rl ./`
